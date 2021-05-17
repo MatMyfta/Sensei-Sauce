@@ -1,16 +1,23 @@
-# sensei_sauce
+# Sensei Sauce
 
-A new Flutter application.
+This application is a classic *guess the anime* game, in which there are some images (anime characters, for example) and the user should guess the anime based on those pictures.
 
-## Getting Started
+The application is being developed with **Flutter**.
 
-This project is a starting point for a Flutter application.
+## To do 
 
-A few resources to get you started if this is your first Flutter project:
+A basic roadmap of the project idea:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [x]Home page screen
+- []Logo
+- [x]Next anime to be guessed thumbnail and progress section
+- []Share button
+- []Reach us on Discord button
+- [x]Game page screen
+- [x]Anime pics section
+- []Custom letter-typing form
+- []Win dialog
+- []Complete anime list grid view
+- []Guessed anime view
+- []Difficulty
+- []Settings

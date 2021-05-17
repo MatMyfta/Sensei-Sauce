@@ -33,6 +33,9 @@ class Game extends StatelessWidget {
                     vertical: 12,
                     horizontal: _hPadding,
                   ),
+
+                  // TODO : remove solution
+                  // This solution has been added only for debugging purpose
                   child: Container(
                     child: RichText(
                       text: TextSpan(
@@ -119,6 +122,7 @@ class Game extends StatelessWidget {
 
 /// This widget is an extension of the [TextField].
 /// Checks if the submitted title is correct.
+/// TODO : change the checker from edittext to custom form
 class TitleChecker extends StatelessWidget {
   final Anime anime;
   final void Function(String) onSubmitted;
