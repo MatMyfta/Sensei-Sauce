@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sensei_sauce/providers/anime_provider.dart';
+import 'package:sensei_sauce/data/anime_repository.dart';
+import 'package:sensei_sauce/models/anime.dart';
 
 import '../game.dart';
 
@@ -48,13 +49,18 @@ class MyDialog extends StatelessWidget {
                   /// pop previous route
                   Navigator.of(context).pop();
 
+                  // next anime
+                  AnimeRepository.index++;
+
                   /// push new route
+                  /// TODO : change the default difficulty to the real difficulty
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => Game(
-                              anime: AnimeProvider
-                                  .animeList[AnimeProvider.next()])));
+                                anime: AnimeRepository.getAnime(),
+                                difficulty: Difficulty.EASY,
+                              )));
                 },
                 child: Text(
                   'Continua',

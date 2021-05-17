@@ -18,23 +18,40 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  font_awesome_flutter: '>= 4.7.0'
-
-
+  font_awesome_flutter: ^9.0.0
+  http: ^0.13.3
+  # The following adds the hive support for data storage
+  hive: ^2.0.4
+  hive_flutter: ^1.0.0
+  path_provider: ^2.0.1
+  # Carousel Slider
+  carousel_slider: ^4.0.0-nullsafety.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.1
+  cupertino_icons: ^1.0.3
+  shared_preferences: ^2.0.5
+  # Cached image
+  cached_network_image: ^2.5.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   integration_test:
     sdk: flutter
+  # The following are useful for the hive support for data storage
+  hive_generator: ^1.1.0
+  build_runner: ^2.0.3
+
+
+dependency_overrides:
+  convert: ^3.0.0
+  crypto: ^3.0.0
+  archive: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

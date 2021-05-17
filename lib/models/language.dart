@@ -1,1 +1,0 @@
-enum Language { ENGLISH, JAPANESE }

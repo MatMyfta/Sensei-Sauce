@@ -1,26 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sensei_sauce/data/anime_repository.dart';
+import 'package:sensei_sauce/models/anime.dart';
 import 'package:sensei_sauce/presentation/screens/game/game.dart';
 import 'package:sensei_sauce/presentation/screens/home/widget/thumbnail.dart';
-import 'package:sensei_sauce/providers/anime_provider.dart';
 
+/// This widget paints the initial page of the app.
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => HomePageState();
 }
 
+/// The state is necessary in order to change the layout and the data
+/// when the user changes the difficulty of the game.
 class HomePageState extends State<HomePage> {
-  final AssetImage easyBackground = AssetImage("assets/wallpaper_ez.jpg");
-  final AssetImage hardBackground = AssetImage("assets/wallpaper_hc.jpg");
+  /// Header Background for the easy difficulty
+  final AssetImage _easyBackground = AssetImage("assets/wallpaper_ez.jpg");
 
-  bool easy;
+  /// Header Background for the hard difficulty
+  final AssetImage _hardBackground = AssetImage("assets/wallpaper_hc.jpg");
 
-  @override
+  /// Difficulty of the game, this object controls the painted layout
+  /// and the given data.
+  late Difficulty _difficulty;
+
+  var _animeList;
+
   initState() {
     super.initState();
-
-    easy = true;
+    _difficulty = Difficulty.EASY;
+    _animeList = AnimeRepository.init();
   }
 
   @override
@@ -35,11 +45,14 @@ class HomePageState extends State<HomePage> {
           child: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: (easy ? easyBackground : hardBackground),
+                    image: (_difficulty == Difficulty.EASY
+                        ? _easyBackground
+                        : _hardBackground),
                     fit: BoxFit.cover)),
             child: Container(),
           ),
         ),
+        // TODO : change the thumbnail data snapshot, in particular the snapshot should be read from shared preferences (or Hive)
         Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -51,46 +64,20 @@ class HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                  child: Row(
-                    children: [
-                      CupertinoSwitch(
-                          value: easy,
-                          onChanged: (value) {
-                            easy = value;
-                          }),
-                      Expanded(child: Container()),
-                      Container(
-                        height: 30,
-                        padding: EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                            color: Color(0xFF3695EE),
-                            borderRadius: BorderRadius.circular(30)),
-                        child: Row(
-                          children: [
-                            Container(
-                                margin: EdgeInsets.only(right: 6),
-                                child: FaIcon(FontAwesomeIcons.lightbulb,
-                                    size: 20, color: Color(0xFFFFFFFF))),
-                            Text(
-                              '${12}',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFFFFFFF)),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
                 Expanded(child: Container()),
-                Thumbnail(
-                  anime: AnimeProvider.animeList[AnimeProvider.start()],
-                  position: AnimeProvider.start(),
-                ),
+                FutureBuilder<List<Anime>>(
+                    future: _animeList,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<Anime>> snapshot) {
+                      if (snapshot.hasData)
+                        return Thumbnail(
+                          anime: AnimeRepository.animeList[0],
+                          position: 0,
+                        );
+                      else if (snapshot.hasError)
+                        return Text('${snapshot.error}');
+                      return CircularProgressIndicator();
+                    }),
                 Expanded(child: Container()),
                 _startButton(),
                 SizedBox(
@@ -107,24 +94,29 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _startButton() {
-    const double _borderRadius = 8;
-    const EdgeInsets _padding =
-        EdgeInsets.symmetric(vertical: 12, horizontal: 45);
-    const Color _buttonColor = Color(0xFFFCD268);
+    const double _borderRadius = 4;
+    const double _verticalPadding = 12;
+    const double _horizontalPadding = 45;
+    const double _fontSize = 24;
 
-    return RaisedButton(
+    const Color _buttonColor = Color(0xFFFCD268);
+    const EdgeInsets _padding = EdgeInsets.symmetric(
+        vertical: _verticalPadding, horizontal: _horizontalPadding);
+
+    return FlatButton(
       onPressed: () {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => Game(
-                    anime: AnimeProvider.animeList[AnimeProvider.start()])));
+                      anime: AnimeRepository.animeList[0],
+                      difficulty: Difficulty.EASY,
+                    )));
       },
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(_borderRadius)),
       color: _buttonColor,
       padding: EdgeInsets.all(0),
-      elevation: 0,
       splashColor: _buttonColor,
       highlightColor: _buttonColor,
       child: Ink(
@@ -136,7 +128,7 @@ class HomePageState extends State<HomePage> {
           'Inizia',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 24,
+            fontSize: _fontSize,
           ),
         ),
       ),
@@ -144,8 +136,11 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _discordLink() {
+    const double _margin = 12;
+    const double _iconSize = 26;
     const Color _fontColor = Color(0xFFA5A5A5);
     const Color _boldFontColor = Color(0xFF585858);
+
     return GestureDetector(
         onTap: () {
           // TODO : link to discord server
@@ -156,10 +151,10 @@ class HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              margin: EdgeInsets.only(right: 12),
+              margin: EdgeInsets.only(right: _margin),
               child: FaIcon(
                 FontAwesomeIcons.discord,
-                size: 26,
+                size: _iconSize,
                 color: _boldFontColor,
               ),
             ),
