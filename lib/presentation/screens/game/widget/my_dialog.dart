@@ -49,9 +49,6 @@ class MyDialog extends StatelessWidget {
                   /// pop previous route
                   Navigator.of(context).pop();
 
-                  // next anime
-                  AnimeRepository.index++;
-
                   /// push new route
                   /// TODO : change the default difficulty to the real difficulty
                   Navigator.push(

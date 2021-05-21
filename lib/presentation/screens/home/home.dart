@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sensei_sauce/data/anime_repository.dart';
 import 'package:sensei_sauce/models/anime.dart';
+import 'package:sensei_sauce/presentation/screens/anime_grid/anime_grid.dart';
 import 'package:sensei_sauce/presentation/screens/game/game.dart';
-import 'package:sensei_sauce/presentation/screens/home/widget/thumbnail.dart';
 
 /// This widget paints the initial page of the app.
 class HomePage extends StatefulWidget {
@@ -23,14 +23,13 @@ class HomePageState extends State<HomePage> {
 
   /// Difficulty of the game, this object controls the painted layout
   /// and the given data.
+  ///
+  /// TODO : implement the difficulty toggle.
   late Difficulty _difficulty;
-
-  var _animeList;
 
   initState() {
     super.initState();
     _difficulty = Difficulty.EASY;
-    _animeList = AnimeRepository.init();
   }
 
   @override
@@ -52,7 +51,9 @@ class HomePageState extends State<HomePage> {
             child: Container(),
           ),
         ),
-        // TODO : change the thumbnail data snapshot, in particular the snapshot should be read from shared preferences (or Hive)
+        // TODO : change the thumbnail data snapshot.
+        // In particular the snapshot should be read from shared preferences
+        // (or better from Hive).
         Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -65,21 +66,9 @@ class HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(child: Container()),
-                FutureBuilder<List<Anime>>(
-                    future: _animeList,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<Anime>> snapshot) {
-                      if (snapshot.hasData)
-                        return Thumbnail(
-                          anime: AnimeRepository.animeList[0],
-                          position: 0,
-                        );
-                      else if (snapshot.hasError)
-                        return Text('${snapshot.error}');
-                      return CircularProgressIndicator();
-                    }),
                 Expanded(child: Container()),
                 _startButton(),
+                _temporaryButton(),
                 SizedBox(
                   height: 24,
                 ),
@@ -93,6 +82,23 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+/*
+  Widget _thumbnail() {
+    return FutureBuilder<List<Anime>>(
+        future: _animeList,
+        builder: (BuildContext context, AsyncSnapshot<List<Anime>> snapshot) {
+          if (snapshot.hasData)
+            return Thumbnail(
+              anime: AnimeRepository.animeList[0],
+              position: 0,
+            );
+          else if (snapshot.hasError) return Text('${snapshot.error}');
+          return CircularProgressIndicator();
+        });
+  }
+*/
+  /// Start button widget, simple [FlatButton] that push the route of the actual
+  /// game page with [MaterialPageRoute].
   Widget _startButton() {
     const double _borderRadius = 4;
     const double _verticalPadding = 12;
@@ -135,6 +141,8 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+  /// Discord link to publicise our discord server.
+  /// Returns a [Container] wrapped by a [GestureDetector].
   Widget _discordLink() {
     const double _margin = 12;
     const double _iconSize = 26;
@@ -173,5 +181,42 @@ class HomePageState extends State<HomePage> {
             )
           ],
         )));
+  }
+
+  Widget _temporaryButton() {
+    const double _borderRadius = 4;
+    const double _verticalPadding = 12;
+    const double _horizontalPadding = 30;
+    const double _fontSize = 18;
+
+    const Color _buttonColor = Color(0xFF444444);
+    const EdgeInsets _padding = EdgeInsets.symmetric(
+        vertical: _verticalPadding, horizontal: _horizontalPadding);
+
+    return FlatButton(
+      onPressed: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => AnimeGrid()));
+      },
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(_borderRadius)),
+      color: _buttonColor,
+      padding: EdgeInsets.all(0),
+      splashColor: _buttonColor,
+      highlightColor: _buttonColor,
+      child: Ink(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
+        ),
+        padding: _padding,
+        child: Text(
+          'Anime List',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: _fontSize,
+          ),
+        ),
+      ),
+    );
   }
 }

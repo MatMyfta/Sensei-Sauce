@@ -4,7 +4,7 @@ import 'package:sensei_sauce/models/anime.dart';
 import 'package:sensei_sauce/presentation/screens/game/helpers/my_dialog_helper.dart';
 
 /// This widget will produce the Game page.
-/// Stores a reference to the [Anime] that contains relevant informations
+/// Stores a reference to the [Anime] that contains relevant information
 /// about the anime that need to be printed.
 class Game extends StatelessWidget {
   final Anime anime;
@@ -78,7 +78,7 @@ class Game extends StatelessWidget {
                               image: new DecorationImage(
                                 fit: BoxFit.cover,
                                 alignment: FractionalOffset.topCenter,
-                                image: Image.network("${Anime.path}${i}").image,
+                                image: Image.network("${i}").image,
                               ),
                             ),
                           );

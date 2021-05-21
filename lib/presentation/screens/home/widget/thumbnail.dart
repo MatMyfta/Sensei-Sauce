@@ -53,7 +53,7 @@ class Thumbnail extends StatelessWidget {
             ),
             child: CachedNetworkImage(
                 placeholder: (context, url) => CircularProgressIndicator(),
-                imageUrl: '${Anime.path}${anime.images[0]}',
+                imageUrl: '${anime.images[0]}',
                 fit: BoxFit.cover),
             clipBehavior: Clip.hardEdge,
           ),

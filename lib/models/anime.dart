@@ -1,19 +1,39 @@
 import 'row.dart';
 
+/// The same anime can appear in more than one [Difficulty], namely it can
+/// appear in [Difficulty.EASY] and [Difficulty.HARD].
 enum Difficulty { EASY, HARD }
+
+/// The [language] of the [Anime] suggests the language in which the user
+/// should type the [title]. It could be either [Language.ENGLISH] or
+/// [Language.JAPANESE].
 enum Language { ENGLISH, JAPANESE }
 
+/// [Anime] model
 class Anime {
-  static final String path = "https://mm268.altervista.org/senseisauce/";
-
+  /// The position of the [Anime] in the list.
   final int position;
+
+  /// The same [Anime] can appear in [Difficulty.EASY] and [Difficulty.HARD] mode.
   final Difficulty difficulty;
+
+  /// String representing the title of the [Anime].
+  /// This is the [String] that should be guessed by the user.
   final String title;
+
+  /// List of the images that will appear in the slider of the game.
+  /// The list should contain the entire path for the network image.
   final List<String> images;
+
+  /// List of [Row]s that represents the characters that helps the user to find
+  /// the solution for the challenge.
   final List<Row> rows;
 
-  /// Check whether the anime has been guessed
-  bool guessed = false;
+  /// Check whether the anime has been already guessed.
+  ///
+  /// This information can be used to collect all the guessed anime, and
+  /// to represent them in a different way.
+  bool guessed;
 
   Anime({
     required this.position,
@@ -21,26 +41,12 @@ class Anime {
     required this.title,
     required this.images,
     required this.rows,
+    this.guessed = false,
   });
 
-  /// This method parses the JSON input file and returns the corresponding
-  /// [Anime] object.
-  factory Anime.fromJson(dynamic json) {
-    return Anime(
-      position: int.parse("${json['position']}"),
-      difficulty: Difficulty.EASY,
-      title: "${json['title']}",
-      images: [
-        '${json['imageA']}',
-        '${json['imageB']}',
-        '${json['imageC']}',
-        '${json['imageD']}'
-      ],
-      rows: [Row("")],
-    );
-  }
-
-  /// This method writes this anime in JSON format.
+  /// This method writes this [Anime] model in JSON format. In particular
+  /// stores information about the [position], [difficulty], [title], [images],
+  /// [rows], and [guessed].
   Map toJson() => {
         'position': this.position,
         'difficulty': this.difficulty,
@@ -60,7 +66,5 @@ class Anime {
   /// This method compares two given anime.
   ///
   /// Comparison is made based on their position.
-  static int compare(Anime a, Anime b) {
-    return a.position - b.position;
-  }
+  static int compare(Anime a, Anime b) => a.position - b.position;
 }
