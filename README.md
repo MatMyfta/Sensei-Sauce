@@ -9,6 +9,7 @@ The application is being developed with **Flutter**.
 A basic roadmap of the project idea:
 
 - [x] Home page screen
+<<<<<<< HEAD
     - [ ] Logo
     - [x] Next anime to be guessed thumbnail and progress section
     - [ ] Share button
@@ -21,3 +22,17 @@ A basic roadmap of the project idea:
     - [ ] Guessed anime view
 - [ ] Difficulty
 - [ ] Settings
+=======
+- [ ] Logo
+- [x] Next anime to be guessed thumbnail and progress section
+- [ ] Share button
+- [ ] Reach us on Discord button
+- [x] Game page screen
+- [x] Anime pics section
+- [ ] Custom letter-typing form
+- [ ] Win dialog
+- [ ] Complete anime list grid view
+- [ ] Guessed anime view
+- [ ] Difficulty
+- [ ] Settings
+>>>>>>> 32fa46b605e94096aeb11e4fa812e0e56ad75365
